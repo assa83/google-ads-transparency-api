@@ -1,0 +1,14 @@
+{
+  "name": "google-ads-transparency-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Google Ads Transparency Center API example in Python, JavaScript and n8n: competitor ads, new-ad alerts, Google ad library. MCP-ready for AI agents.",
+  "license": "MIT",
+  "scripts": {
+    "start": "node example.mjs"
+  },
+  "dependencies": {
+    "apify-client": "^2.25.0"
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "name": "Apify google-ads-transparency-scraper (scheduled)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "3a17d4ea-05fa-458b-93d5-1d64ef53dbdc",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/lagenuina_agency~google-ads-transparency-scraper/run-sync-get-dataset-items",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"queries\": [\n    \"hellofresh.com\"\n  ],\n  \"region\": \"US\",\n  \"maxAdsPerSearch\": 200,\n  \"onlyNewAds\": true,\n  \"monitorStoreName\": \"ads-monitor-hellofresh\"\n}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "id": "c69e3112-a62a-491a-afa2-da421125616b",
+      "name": "Run Apify actor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Apify API token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d670e505-42d9-45c7-8ab6-620eea0b1328",
+              "name": "advertiserName",
+              "value": "={{ $json.advertiserName }}",
+              "type": "string"
+            },
+            {
+              "id": "6930b30a-11b6-44bd-a643-d51e8f12abc8",
+              "name": "domain",
+              "value": "={{ $json.domain }}",
+              "type": "string"
+            },
+            {
+              "id": "809e6a35-60af-4b07-b07b-d63f941d3e45",
+              "name": "format",
+              "value": "={{ $json.format }}",
+              "type": "string"
+            },
+            {
+              "id": "23a8cf98-d648-47d5-b685-dbcab933e462",
+              "name": "firstShown",
+              "value": "={{ $json.firstShown }}",
+              "type": "string"
+            },
+            {
+              "id": "d4e8227b-7b7f-476c-b92f-d896b8f7e3f3",
+              "name": "adUrl",
+              "value": "={{ $json.adUrl }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1dc9a69-1488-4c76-9201-db97d10bc8b2",
+      "name": "Keep fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Run Apify actor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Apify actor": {
+      "main": [
+        [
+          {
+            "node": "Keep fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false
+}
